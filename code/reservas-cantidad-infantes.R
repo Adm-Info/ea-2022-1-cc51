@@ -1,19 +1,23 @@
+
 # e. ¿Cuántas reservas incluyen niños y/o bebes?
+
+install.packages(scales)
 
 # * Identificación de datos faltantes (NA).
 summary(hotel_data[, c('children','babies')])
 # Existen 4 filas sin cantidad de niños y 32 sin cantidad de bebés
 
+
 # * Técnica utilizada para eliminar o completar los datos faltantes.
 
 # Dado que las familias con niños requieren un poco más de espacio en el cuarto,
-# usaremos esa variable para comparar
+# usaremos la variable tipo de cuarto para comparar
 boxplot(hotel_data$children ~ hotel_data$reserved_room_type, ylim  = c(0,3),
         main = "Tipos de cuartos reservados vs Cantidad de niños",
         xlab = "Tipos de cuarto", ylab="Cantidad de niños")
-# en las categorias de cuartos a, d, e, h, l y p no suelen tener niños
+# en las categorias de cuartos a, d, e, l y p no suelen tener niños
 # en la categoría H suelen haber 1 niño, y en la categoría F,
-# aunque no la mayoría,la distribución se concentra en el 1 niño
+# aunque no la mayoría, la distribución se concentra en 1 niño
 # en las categorías C y G, aunque no todos, la mediana se halla en 2 niños
 # en la categoria B, la mediana se encuentra en 0 niños
 # utilizaremos los datos de la mediana para reemplazar los NA
