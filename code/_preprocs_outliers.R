@@ -30,6 +30,19 @@ hotel_datos$babies[hotel_datos$babies >= 9] <- 0
 hotel_datos[outlier_babies_rows,c('reserved_room_type','babies')]
 
 
+
+# ADULTS: COOREGIR
+#verificamos datos atipicos de los adultos
+boxplot(x = hotel_datos$adults)
+table(hotel_datos$adults)
+#Datos con 0 adultos volverlos NA
+hotel_datos$adults[hotel_datos$adults == 0] <- NA
+#Remplazamos datos NA por valores
+hotel_datos[is.na(hotel_datos$adults),][,c('reserved_room_type','adults')]
+empty_adults_rows <- rownames(hotel_datos[is.na(hotel_datos$adults),])
+hotel_datos[is.na(hotel_datos$adults),'adults'] <- sample(c(1,2), replace=TRUE, size=397)
+hotel_datos[empty_children_rows,c('reserved_room_type','adults')]
+
 # ADULTS: hay 14 valores atipicos: 10, 20, 26, 27, 50 , 50 ,55
 outlier_adults_rows <- rownames(hotel_datos[hotel_datos$adults >= 10,])
 hotel_datos$adults[hotel_datos$adults >= 10] <- 2

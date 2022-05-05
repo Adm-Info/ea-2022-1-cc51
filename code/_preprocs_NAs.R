@@ -80,19 +80,6 @@ hotel_datos[is.na(hotel_datos$babies),'babies'] <- 0
 hotel_datos[empty_babies_rows,c('reserved_room_type','babies')]
 
 
-# ADULTS: COOREGIR
-#verificamos datos atipicos de los adultos
-boxplot(x = hotel_datos$adults)
-table(hotel_datos$adults)
-#Datos con 0 adultos volverlos NA
-hotel_datos$adults[hotel_datos$adults == 0] <- NA
-#Remplazamos datos NA por valores
-hotel_datos[is.na(hotel_datos$adults),][,c('reserved_room_type','adults')]
-empty_adults_rows <- rownames(hotel_datos[is.na(hotel_datos$adults),])
-hotel_datos[is.na(hotel_datos$adults),'adults'] <- sample(c(1,2), replace=TRUE, size=397)
-hotel_datos[empty_children_rows,c('reserved_room_type','adults')]
-
-
 # arrival_date_week_number (25)
 empty_weeks.nums <- rownames(hotel_datos[is.na(hotel_datos$arrival_date_week_number), ])
 hotel_datos[empty_weeks.nums,c('arrival_date', 'arrival_date_week_number')]
@@ -194,3 +181,11 @@ empty_stays.weeks.fill()
 hotel_datos$stays_in_week_nights[is.na(hotel_datos$stays_in_week_nights)] <- empty_stays.weeks.fill()
 hotel_datos[empty_stays.weeks.nums,c('arrival_date', 'stays_in_weekend_nights', 'stays_in_week_nights')]
 
+
+# ARRIVAL_DATE
+# volvemos a completar los datos de esta columna calculada
+hotel_datos$arrival_date <- paste(hotel_datos$arrival_date_year,
+                                  match(substr( hotel_datos$arrival_date_month, 1, 3), month.abb),
+                                  hotel_datos$arrival_date_day_of_month, sep="-")
+hotel_datos$arrival_date <- as.Date(hotel_datos$arrival_date)
+summary(hotel_datos$arrival_date)
