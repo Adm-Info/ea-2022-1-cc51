@@ -133,14 +133,12 @@ hotel_datos[empty_babies_rows,c('reserved_room_type','babies')]
 
 # Completar datos de adultos
 #verificamos datos atipicos de los adultos
-boxplot(x = hotel_datos$adults)
-table(hotel_datos$adults)
-#Creamos la funcion de la moda
-calc_mode <- function(x){
-  distinct_tabulate <- tabulate(match(x, distinct_values))
-  # Return the value with the highest occurrence
-  distinct_values[which.max(distinct_tabulate)]
-}
+boxplot(x = hotel_datos$days_in_waiting_list)
+table(hotel_datos$days_in_waiting_list)
+hotel_datos[is.na(hotel_datos$adults),][,c('reserved_room_type','adults')]
+empty_adults_rows <- as.integer(rownames(hotel_datos[is.na(hotel_datos$adults),]))
+hotel_datos[is.na(hotel_datos$adults),'adults'] <- sample(c(1,2), replace=TRUE, size=12)
+hotel_datos[empty_children_rows,c('reserved_room_type','adults')]
 
 
 # Completar datos de arrival_date_week_number
@@ -150,12 +148,6 @@ hotel_datos[empty_weeks.nums,c('arrival_date', 'arrival_date_week_number')]
 empty_weeks.days <- as.POSIXlt(hotel_datos$arrival_date[empty_weeks.nums])
 empty_weeks.weeks <- (empty_weeks.days$yday) %/%7 +1
 hotel_datos$arrival_date_week_number[is.na(hotel_datos$arrival_date_week_number)] = empty_weeks.weeks
-
-
-
-
-
-
 
 
 # * Identificación de datos atípicos (Outliers).
