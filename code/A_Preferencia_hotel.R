@@ -2,30 +2,8 @@
 #Cargamos la data
 #Como se puede observar en la data obtenida existen 2 tipos de hotel EL city hotel y el resort hotel
 
-#Completamos los datos NA con un valor random
-rand.valor <- function(x){
-   faltantes <- is.na(x)
-   tot.faltantes <- sum(faltantes)
-   x.obs <- x[!faltantes]
-   valorado <- x
-   valorado[faltantes] <- sample(x.obs, tot.faltantes, replace = TRUE)
-   return (valorado)
-}
-random.df <- function(df, cols){
-   nombres <- names(df)
-   for (col in cols) {
-     nombre <- paste(nombres[col], "valorado", sep = ".")
-     df[nombre] <- rand.valor(df[,col])
-     }
-   df
-}
-#ver en que columnas falta data
-colSums(is.na(hotel_data))
-#limpiar data
-data.limpio <- random.df(hotel_data, c(3,4,6,7,8,9,10,11,12,26,33))
-
 #Eliminar datos duplicados
-hotel_data.u<-unique(data.limpio)
+hotel_data.u<-unique(hotel_data)
 
 #Observar datos unicos
 counts = table(hotel_data.u$is_canceled, hotel_data.u$ï..hotel)
