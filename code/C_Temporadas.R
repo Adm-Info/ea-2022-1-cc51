@@ -1,7 +1,7 @@
 #c. ¿Cuándo se producen las temporadas de reservas: alta, media y baja?
 
 #Volvemos el mes como factor para poder ordenarlos
-month_vector<-factor(hotel_data_final$arrival_date_month)
+month_vector<-factor(hotel_datos_final$arrival_date_month)
 month<-factor(month_vector,levels=c("January","February","March","April","May","June","July","August","September","October","November","December"))
 levels(month)<-c("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre")
 
