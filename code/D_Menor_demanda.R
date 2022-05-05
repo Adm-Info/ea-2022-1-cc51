@@ -6,7 +6,7 @@ month<-factor(month_vector,levels=c("January","February","March","April","May","
 levels(month)<-c("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre")
 
 #vizualizar datos
-plot(month,col="darkslategray1",ylab="Cantidad de reservas",xlab="Mes")
+plot(month,col="blue",ylab="Cantidad de reservas",xlab="Mes", border = NA )
 table(month)
 
 #Como se puede observar la demanda de reservas es menor entre los meses de noviembre y enero. 

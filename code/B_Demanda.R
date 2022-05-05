@@ -6,10 +6,10 @@ month<-factor(month_vector,levels=c("January","February","March","April","May","
 levels(month)<-c("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre")
 
 #Visualización de datos
-counts = table(hotel_datos$arrival_date_year.comp,month)
+counts = table(hotel_datos$arrival_date_year,month)
 table(month,hotel_datos$arrival_date_year)
-table(hotel_datos$arrival_date_year.comp)
-barplot(counts, main = "", beside = TRUE,  col=c("blue" , "black", "red"), legend = c("2015", "2016", "2017"))
+table(hotel_datos$arrival_date_year)
+barplot(counts, main = "", beside = TRUE,  col=c("blue" , "black", "red"), legend = c("2015", "2016", "2017"), border=NA)
 
 #Como se puede observar la demanda a través del tiempo está aumentado. El año 2017
 #presenta menor cantidad de alojamientos porque solo se está contado hasta el mes de julio.

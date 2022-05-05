@@ -9,7 +9,7 @@
 counts = table(hotel_datos$is_canceled, hotel_datos$ï..hotel)
 table(hotel_datos$ï..hotel,hotel_datos$is_canceled)
 table(hotel_datos$ï..hotel)
-barplot(counts, col=c("blue" , "red"), legend = c("Check-in","Cancelado"), main = "Reserva por tipo de hotel", beside = TRUE)
+barplot(counts, col=c("blue" , "red"), legend = c("Check-in","Cancelado"), main = "Reserva por tipo de hotel", beside = TRUE, border=NA)
 
 #datos no unicos
 table(hotel_datos$ï..hotel,hotel_datos$is_canceled)
@@ -19,3 +19,4 @@ table(hotel_datos$ï..hotel)
 #reservaciones de las cuales 26000 son check-in y 8015 son cancelaciones.
 #A partir de esta data se puede llegar a inferir que el tipo de hotel que las personas prefieren es el
 #City Hotel
+

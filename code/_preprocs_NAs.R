@@ -85,13 +85,12 @@ hotel_datos[empty_babies_rows,c('reserved_room_type','babies')]
 boxplot(x = hotel_datos$adults)
 table(hotel_datos$adults)
 #Datos con 0 adultos volverlos NA
-hotel_datos$adults[hotel_datos$adults == 0] <- NA
+hotel_datos$adults[hotel_datos$adults == 0 & hotel_datos$is_canceled == 0] <- NA
 #Remplazamos datos NA por valores
 hotel_datos[is.na(hotel_datos$adults),][,c('reserved_room_type','adults')]
 empty_adults_rows <- rownames(hotel_datos[is.na(hotel_datos$adults),])
-hotel_datos[is.na(hotel_datos$adults),'adults'] <- sample(c(1,2), replace=TRUE, size=397)
+hotel_datos[is.na(hotel_datos$adults),'adults'] <- sample(c(1,2), replace=TRUE, size=300)
 hotel_datos[empty_adults_rows,c('reserved_room_type','adults')]
-
 
 # arrival_date_week_number (25)
 empty_weeks.nums <- rownames(hotel_datos[is.na(hotel_datos$arrival_date_week_number), ])
