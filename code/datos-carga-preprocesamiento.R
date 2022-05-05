@@ -7,31 +7,6 @@ hotel_data <- read.csv ("data/hotel_bookings_miss.csv", header = TRUE, sep = ","
 str(hotel_data)
 
 #PRE-PROCESAR DATOS
-#las columnas is_canceled e is_repeated_guest serán convertidas en factor
-hotel_data$is_canceled <- as.factor(hotel_data$is_canceled)
-hotel_data$is_repeated_guest <- as.factor(hotel_data$is_repeated_guest)
-
-#la columna reservation_status_date será convertida a date
-#verificamos el formato de la fecha es dd/mm/yyyy o mm/dd/yyyy
-head(hotel_data$reservation_status_date,50)
-#comprobamos que es mm/dd/yyyy
-hotel_data$reservation_status_date <- as.Date(hotel_data$reservation_status_date, "%m/%d/%y")
-
-#Concatenaremos las columnas "arrival_date_..." para crear una sola con formato fecha
-#verificamos que los meses tienen formato con nombre del mes, por tanto los transformaremos en número
-
-
-
-hotel_data$arrival_date <- paste(hotel_data$arrival_date_year,
-                                 match(substr( hotel_data$arrival_date_month, 1, 3), month.abb),
-                                 hotel_data$arrival_date_day_of_month, sep="-")
-hotel_data$arrival_date <- as.Date(hotel_data$arrival_date)
-summary(hotel_data$arrival_date)
-
-
-#volvemos a comprobar la tabla
-str(hotel_data)
-
 #Identificación de datos faltates
 datos_NA <- function(x){
   sum = 0
@@ -45,7 +20,7 @@ datos_NA <- function(x){
   }
 }
 
-datos_NA(hotel_data)
+datos_NA(hotel_datos)
 
 #Columnas : total de valores NA 
 #lead_time : 21 
@@ -82,7 +57,7 @@ en_blanco(hotel_data)
 hotel_datos<-unique(hotel_data)
 
 
-#Lo remplazamos con un valor aleatorio
+#Ingresar datos aleatorios a las columnas lead_time, arrival_date_year, arrival_date_day_of_month
 rand.valor <- function(x){
   faltantes <- is.na(x)
   tot.faltantes <- sum(faltantes)
@@ -94,12 +69,11 @@ rand.valor <- function(x){
 random.df <- function(df, cols){
   nombres <- names(df)
   for (col in cols) {
-    nombre <- paste(nombres[col], "comp", sep = ".")
-    df[nombre] <- rand.valor(df[,col])
+    df[nombres[col]] <- rand.valor(df[,col])
   }
   df
 }
-hotel_datos<-random.df(hotel_datos, c(4))
+hotel_datos<-random.df(hotel_datos, c(3, 4, 7))
 
 # * Identificación de datos faltantes (NA).
 summary(hotel_datos[, c('children','babies')])
@@ -150,12 +124,48 @@ outline_babies_rows <- as.integer(rownames(hotel_datos[hotel_datos$babies >= 9,]
 hotel_datos[outline_babies_rows,'babies'] <- 0
 hotel_datos[outline_babies_rows,c('reserved_room_type','babies')]
 
+#las columnas is_canceled e is_repeated_guest serán convertidas en factor
+hotel_datos$is_canceled <- as.factor(hotel_datos$is_canceled)
+hotel_datos$is_repeated_guest <- as.factor(hotel_datos$is_repeated_guest)
 
-remplazar_col <- function(x){
-  for(i in 1:ncol(x)){
-    
-    
-    }
+#la columna reservation_status_date será convertida a date
+#verificamos el formato de la fecha es dd/mm/yyyy o mm/dd/yyyy
+head(hotel_datos$reservation_status_date,50)
+#comprobamos que es mm/dd/yyyy
+hotel_datos$reservation_status_date <- as.Date(hotel_datos$reservation_status_date, "%m/%d/%y")
+
+#Concatenaremos las columnas "arrival_date_..." para crear una sola con formato fecha
+#verificamos que los meses tienen formato con nombre del mes, por tanto los transformaremos en número
+
+
+
+hotel_datos$arrival_date <- paste(hotel_datos$arrival_date_year,
+                                 match(substr( hotel_datos$arrival_date_month, 1, 3), month.abb),
+                                 hotel_datos$arrival_date_day_of_month, sep="-")
+hotel_datos$arrival_date <- as.Date(hotel_datos$arrival_date)
+summary(hotel_datos$arrival_date)
+
+
+#volvemos a comprobar la tabla
+str(hotel_datos)
+
+#verificamos datos atipicos de los adultos
+boxplot(x = hotel_datos$adults)
+table(hotel_datos$adults)
+
+#Creamos la funcion de la moda
+calc_mode <- function(x){
+  distinct_tabulate <- tabulate(match(x, distinct_values))
+  # Return the value with the highest occurrence
+  distinct_values[which.max(distinct_tabulate)]
   
   
 }
+
+# arrival_date_week_number : 25 
+empty_weeks.nums <- as.integer(rownames(hotel_datos[is.na(hotel_datos$arrival_date_week_number), ]))
+hotel_datos[empty_weeks.nums,c('arrival_date', 'arrival_date_week_number')]
+empty_weeks.days <- as.POSIXlt(hotel_datos$arrival_date[empty_weeks.nums])
+empty_weeks.weeks <- (empty_weeks.days$yday) %/%7 +1
+hotel_datos$arrival_date_week_number[empty_weeks.nums] <- empty_weeks.weeks
+

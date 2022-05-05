@@ -3,55 +3,6 @@
 
 install.packages(scales)
 
-# * Identificación de datos faltantes (NA).
-summary(hotel_data[, c('children','babies')])
-# Existen 4 filas sin cantidad de niños y 32 sin cantidad de bebés
-
-
-# * Técnica utilizada para eliminar o completar los datos faltantes.
-
-# Dado que las familias con niños requieren un poco más de espacio en el cuarto,
-# usaremos la variable tipo de cuarto para comparar
-boxplot(hotel_data$children ~ hotel_data$reserved_room_type, ylim  = c(0,3),
-        main = "Tipos de cuartos reservados vs Cantidad de niños",
-        xlab = "Tipos de cuarto", ylab="Cantidad de niños")
-# en las categorias de cuartos a, d, e, l y p no suelen tener niños
-# en la categoría H suelen haber 1 niño, y en la categoría F,
-# aunque no la mayoría, la distribución se concentra en 1 niño
-# en las categorías C y G, aunque no todos, la mediana se halla en 2 niños
-# en la categoria B, la mediana se encuentra en 0 niños
-hotel_data[is.na(hotel_data$children),][,c('reserved_room_type','children')]
-empty_children_rows <- as.integer(rownames(hotel_data[is.na(hotel_data$children),]))
-# son 4 filas: 40601 40668 40680 41161
-# se observa que todos tienen reserved_room_type B, en los cuales la cantidad de niños
-# varía entre 0, 1 y 2
-hotel_data[is.na(hotel_data$children),'children'] <- sample(c(0,1), replace=TRUE, size=4)
-hotel_data[empty_children_rows,c('reserved_room_type','children')]
-# Respecto a la cantidad de bebés, no se aprecia una categoría
-# que muestre cierta relación con la cantidad de bebés
-barplot(table(hotel_data$babies))
-empty_babies_rows <- as.integer(rownames(hotel_data[is.na(hotel_data$babies),]))
-# Sin embargo, se aprecia que una mayoría considerable de personas
-# no se hospeda con bebés, por lo cual se completarán los datos con 0
-hotel_data[is.na(hotel_data$babies),'babies'] <- 0
-hotel_data[empty_babies_rows,c('reserved_room_type','babies')]
-
-# * Identificación de datos atípicos (Outliers).
-# * Técnica(s) utilizada(s) para transformar los datos atípicos
-
-# En el resumen de la columna de Children se observa el máximo 10, que es un dato
-# atípico considerando que la moda es 0,1029 y la mediana, 0
-outline_children_rows <- as.integer(rownames(hotel_data[hotel_data$children > 5,]))
-hotel_data[outline_children_rows,c('reserved_room_type','children')]
-# Como en la D no suele haber niños, se colocará 0
-hotel_data[hotel_data$children > 5,'children'] <- 0
-hotel_data[outline_children_rows,c('reserved_room_type','children')]
-
-# En bebes solo hay 2 datos atípicos: 10 y 9
-outline_babies_rows <- as.integer(rownames(hotel_data[hotel_data$babies >= 9,]))
-hotel_data[outline_babies_rows,'babies'] <- 0
-hotel_data[outline_babies_rows,c('reserved_room_type','babies')]
-
 
 # * Visualización de datos
 t_infantes <- data.frame( hotel_data[hotel_data$children > 0 | hotel_data$babies > 0,][, c('children','babies')] )
