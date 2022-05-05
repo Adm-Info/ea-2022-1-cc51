@@ -14,8 +14,8 @@ barplot(counts, col=c("blue" , "red"), legend = c("Check-in","Cancelado"), main 
 #datos no unicos
 table(hotel_datos$ï..hotel,hotel_datos$is_canceled)
 table(hotel_datos$ï..hotel)
-#Como se puede observar en en la tabla se han realizado 79330 reservas en los hoteles tipo City de las 
-#cuales 46228 son check-in y 33102 Cancelados. En el caso de los Resort Hotel presenta 40060
-#reservaciones de las cuales 28938 son check-in y 11122 son cancelaciones.
+#Como se puede observar en en la tabla se han realizado 53428 reservas en los hoteles tipo City de las 
+#cuales 37379 son check-in y 16049 Cancelados. En el caso de los Resort Hotel presenta 34015
+#reservaciones de las cuales 26000 son check-in y 8015 son cancelaciones.
 #A partir de esta data se puede llegar a inferir que el tipo de hotel que las personas prefieren es el
 #City Hotel

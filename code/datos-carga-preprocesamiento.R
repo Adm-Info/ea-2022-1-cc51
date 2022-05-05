@@ -1,37 +1,12 @@
 #CARGAR DATOS
 hotel_data <- read.csv ("data/hotel_bookings_miss.csv", header = TRUE, sep = ",")
 
-
 #INSPECCIONAR DATOS
 #verificamos que los datos estén acorde al tipo de dato
 str(hotel_data)
 
-#las columnas is_canceled e is_repeated_guest serán convertidas en factor
-hotel_data$is_canceled <- as.factor(hotel_data$is_canceled)
-hotel_data$is_repeated_guest <- as.factor(hotel_data$is_repeated_guest)
-
-#la columna reservation_status_date será convertida a date
-#verificamos el formato de la fecha es dd/mm/yyyy o mm/dd/yyyy
-head(hotel_data$reservation_status_date,50)
-#comprobamos que es mm/dd/yyyy
-hotel_data$reservation_status_date <- as.Date(hotel_data$reservation_status_date, "%m/%d/%y")
-
-#Concatenaremos las columnas "arrival_date_..." para crear una sola con formato fecha
-#verificamos que los meses tienen formato con nombre del mes, por tanto los transformaremos en número
-
-
-
-hotel_data$arrival_date <- paste(hotel_data$arrival_date_year,
-                                  match(substr( hotel_data$arrival_date_month, 1, 3), month.abb),
-                                 hotel_data$arrival_date_day_of_month, sep="-")
-hotel_data$arrival_date <- as.Date(hotel_data$arrival_date)
-summary(hotel_data$arrival_date)
-
-
 #volvemos a comprobar la tabla
 str(hotel_data)
-
-
 
 # DUplicados
 #solo usaremos columnas no duplicadas
@@ -100,7 +75,28 @@ random.df <- function(df, cols){
   }
   df
 }
-hotel_datos<-random.df(hotel_datos, c(3, 4, 7))
+hotel_datos<-random.df(hotel_datos, c(3, 4, 7, 26))
+
+#las columnas is_canceled e is_repeated_guest serán convertidas en factor
+hotel_data$is_canceled <- as.factor(hotel_data$is_canceled)
+hotel_data$is_repeated_guest <- as.factor(hotel_data$is_repeated_guest)
+
+#la columna reservation_status_date será convertida a date
+#verificamos el formato de la fecha es dd/mm/yyyy o mm/dd/yyyy
+head(hotel_data$reservation_status_date,50)
+#comprobamos que es mm/dd/yyyy
+hotel_data$reservation_status_date <- as.Date(hotel_data$reservation_status_date, "%m/%d/%y")
+
+#Concatenaremos las columnas "arrival_date_..." para crear una sola con formato fecha
+#verificamos que los meses tienen formato con nombre del mes, por tanto los transformaremos en número
+
+
+
+hotel_data$arrival_date <- paste(hotel_data$arrival_date_year,
+                                 match(substr( hotel_data$arrival_date_month, 1, 3), month.abb),
+                                 hotel_data$arrival_date_day_of_month, sep="-")
+hotel_data$arrival_date <- as.Date(hotel_data$arrival_date)
+summary(hotel_data$arrival_date)
 
 # Completar datos de children
 # Dado que las familias con niños requieren un poco más de espacio en el cuarto,
@@ -133,11 +129,14 @@ hotel_datos[empty_babies_rows,c('reserved_room_type','babies')]
 
 # Completar datos de adultos
 #verificamos datos atipicos de los adultos
-boxplot(x = hotel_datos$days_in_waiting_list)
-table(hotel_datos$days_in_waiting_list)
+boxplot(x = hotel_datos$adults)
+table(hotel_datos$adults)
+#Datos con 0 adultos volverlos NA
+hotel_datos$adults[hotel_datos$adults == 0] <- NA
+#Remplazamos datos NA por valores
 hotel_datos[is.na(hotel_datos$adults),][,c('reserved_room_type','adults')]
 empty_adults_rows <- as.integer(rownames(hotel_datos[is.na(hotel_datos$adults),]))
-hotel_datos[is.na(hotel_datos$adults),'adults'] <- sample(c(1,2), replace=TRUE, size=12)
+hotel_datos[is.na(hotel_datos$adults),'adults'] <- sample(c(1,2), replace=TRUE, size=397)
 hotel_datos[empty_children_rows,c('reserved_room_type','adults')]
 
 
@@ -155,16 +154,19 @@ hotel_datos$arrival_date_week_number[is.na(hotel_datos$arrival_date_week_number)
 
 # En el resumen de la columna de Children se observa el máximo 10, que es un dato
 # atípico considerando que la moda es 0,1029 y la mediana, 0
-outline_children_rows <- as.integer(rownames(hotel_datos[hotel_datos$children > 5,]))
+outline_children_rows <- rownames(hotel_datos[hotel_datos$children > 5,])
 hotel_datos[outline_children_rows,c('reserved_room_type','children')]
 # Como en la D no suele haber niños, se colocará 0
 hotel_datos[hotel_datos$children > 5,'children'] <- 0
 hotel_datos[outline_children_rows,c('reserved_room_type','children')]
 
 # En bebes solo hay 2 datos atípicos: 10 y 9
-outline_babies_rows <- as.integer(rownames(hotel_datos[hotel_datos$babies >= 9,]))
-hotel_datos[outline_babies_rows,'babies'] <- 0
+outline_babies_rows <- rownames(hotel_datos[hotel_datos$babies >= 9,])
+hotel_datos$babies[hotel_datos$babies >= 9] <- 0
 hotel_datos[outline_babies_rows,c('reserved_room_type','babies')]
 
-
+#En adultos hay 14 valores atipicos: 10, 20, 26, 27, 50 , 50 ,55
+outline_adults_rows <- rownames(hotel_datos[hotel_datos$adults >= 10,])
+hotel_datos$adults[hotel_datos$adults >= 10] <- 2
+hotel_datos[outline_adults_rows,c('reserved_room_type','adults')]
 
