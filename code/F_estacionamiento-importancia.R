@@ -8,6 +8,13 @@ hotel_data$arrival_date_year_week = hotel_data$arrival_date_year * 100 + hotel_d
 summary(hotel_data[c("required_car_parking_spaces", "arrival_date_year_week")])
 
 # * Identificación de datos faltantes (NA).
+# arrival_date_week_number : 25 
+empty_weeks.nums <- as.integer(rownames(hotel_data[is.na(hotel_data$arrival_date_week_number), ]))
+hotel_data[empty_weeks.nums,c('arrival_date', 'arrival_date_week_number')]
+empty_weeks.days <- as.POSIXlt(hotel_data$arrival_date[empty_weeks.nums])
+empty_weeks.weeks <- (empty_weeks.days$yday) %/%7 +1
+hotel_data$arrival_date_week_number[empty_weeks.nums] <- empty_weeks.weeks
+
 # existen 31 año_semana sin fecha
 
 # * Técnica utilizada para eliminar o completar los datos faltantes.
