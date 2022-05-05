@@ -1,17 +1,14 @@
 #b- ¿Está aumentando la demanda con el tiempo?
 
-#creamos una copia de la data para modificarla libremente
-hotel_data2 <- read.csv ("data/hotel_bookings_miss.csv", header = TRUE, sep = ",")
-
 #Volvemos todos los que han cancelado null
-hotel_data2$is_canceled[hotel_data2$is_canceled == 1] <- NA
+hotel_data$is_canceled[hotel_data$is_canceled == 1] <- NA
 
 #Borramos las recervaciones canceladas
-data.iscancel.limpio2 <- hotel_data2[!is.na(hotel_data2$is_canceled),]
+data.iscancel.limpio <- hotel_data[!is.na(hotel_data$is_canceled),]
 
 
 #Revisamos datos faltantes
-summary(data.iscancel.limpio2[,c('arrival_date_year', 'arrival_date_month')])
+summary(data.iscancel.limpio[,c('arrival_date_year', 'arrival_date_month')])
 #Observamos que solo nos queda un dato que tiene arrival_date_year NA.
 
 #Lo remplazamos con un valor aleatorio
@@ -31,10 +28,10 @@ random.df <- function(df, cols){
     }
    df
    }
-data.iscancel.limpio2<-random.df(data.iscancel.limpio2, c(4))
+data.iscancel.limpio<-random.df(data.iscancel.limpio, c(4))
 
 #volvemos la data unica sin duplicados
-data.unique<-unique(data.iscancel.limpio2)
+data.unique<-unique(data.iscancel.limpio)
 
 #Ordenamos los meses
 month_vector<-factor(data.unique$arrival_date_month)

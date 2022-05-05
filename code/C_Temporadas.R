@@ -3,6 +3,8 @@
 #Creamos copia del archivo csv
 hotel_data3 <- read.csv ("data/hotel_bookings_miss.csv", header = TRUE, sep = ",")
 
+#No hay datos NA en arrival_date_month
+
 #Si la reservacion fue cancelada la volvemos na
 hotel_data3$is_canceled[hotel_data3$is_canceled == 1] <- NA
 

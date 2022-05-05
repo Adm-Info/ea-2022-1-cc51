@@ -18,4 +18,4 @@ plot(month,col="darkslategray1",ylab="Cantidad de reservas",xlab="Mes")
 table(month)
 
 #Como se puede observar la demanda de reservas es menor entre los meses de noviembre y enero. La demanda de 
-#reservas es menos a finales e inicios de años según la data presentada. 
+#reservas es menos a finales e inicios de años según la data presentada. El mes con menos demanda es Enero
