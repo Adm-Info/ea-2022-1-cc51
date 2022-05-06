@@ -1,32 +1,15 @@
 # g. ¿En qué meses del año se producen más cancelaciones de reservas?
 
-#names(hotel_datos)
-#IsCanceled Value indicating if the booking was canceled (1) or not (0)
-summary(hotel_datos$is_canceled)
-#solo aquuellos que no cancelaron (1)
-#ReservationStatus:
-#Canceled – booking was canceled by the customer;
-#Check-Out – customer has checked in but already departed;
-#No-Show – customer did not check-in and did inform the hotel of the reason why
-summary(hotel_datos$reservation_status)
-#ReservationStatusDate	Date	Date at which the last status was set.
-#This variable can be used in conjunction with the ReservationStatus
-#to understand when was the booking canceled or when did the customer checked-out of the hotel
-summary(hotel_datos$reservation_status_date)
-
-# * Identificación de datos faltantes (NA).
-#No hay
-# * Técnica utilizada para eliminar o completar los datos faltantes.
-# * Identificación de datos atípicos (Outliers).
-boxplot(reservation_status_date ~ reservation_status * is_canceled, data = hotel_datos,
-      ylab = "Meses y Si fue cancelado", xlab = "Estado de reserva", drop=TRUE, horizontal = TRUE)
-# No se encontraron datos atípicos. Si han sido cancelados están marcados como tal
-# * Técnica(s) utilizada(s) para transformar los datos atípicos
-
 # * Visualización de datos
-boxplot(reservation_status_date ~ reservation_status , data = hotel_datos,
-        ylab = "Meses y Si fue cancelado", xlab = "Estado de reserva", drop=TRUE, horizontal = TRUE,
-        subset = is_canceled==1)
+reservs.canceled <- hotel_datos[hotel_datos$is_canceled==1,][,c('reservation_status','reservation_status_date')]
+reservs.canceled['months_names'] <- months(reservs.canceled$reservation_status_date)
+reservs.canceled['months_nums'] <- strftime(reservs.canceled$reservation_status_date,"%m")
+reservs.canceled['months'] <- paste(reservs.canceled$months_nums,':',reservs.canceled$months_names,sep='')
+boxplot(reservation_status_date ~ reservation_status , data = reservs.canceled,
+        col = c('chocolate1','orangered'), drop=TRUE, horizontal = TRUE,
+        ylab = "Estado de reserva", xlab = "Meses",
+        main = "Estado de reservas canceladas por meses")
+table(reservs.canceled[,c('reservation_status','months')])
 # Como se puede observar, entre los meses de marzo a octubre se dieron las cancelaciones,
 # siendo entre junio a julio los más frecuentes
 

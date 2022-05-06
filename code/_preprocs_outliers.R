@@ -1,4 +1,4 @@
-# IDENTIFICACIÓN DE DATOS ATÍTPICOS (Outliers).
+# IDENTIFICACIÓN DE DATOS ATÍTPICOS (Outliers) Y GUARDADO DE BD.
 
 # CHILDREN: 
 summary(hotel_datos$children)
@@ -40,6 +40,14 @@ hotel_datos$required_car_parking_spaces[hotel_datos$adults < hotel_datos$require
 boxplot(required_car_parking_spaces ~ adults, data=hotel_datos)
 
 
-# arrival_date_year_week : 
-boxplot(hotel_datos$arrival_date_year_week)
-# no existen datos anómlaos en arrival_date_year_week
+#reservation_status e is_canceled
+boxplot(reservation_status_date ~ reservation_status * is_canceled, data = hotel_datos, 
+        ylab = "Meses y Si fue cancelado", xlab = "Estado de reserva", drop=TRUE, horizontal = TRUE)
+# No se encontraron datos atípicos. Si han sido cancelados están marcados como tal
+
+
+#================
+# GUARDAR DATOS
+write.csv(hotel_datos,"data/hotel_data_proc.csv", row.names = TRUE)
+
+
