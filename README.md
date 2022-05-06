@@ -1,9 +1,3 @@
-Objetivo del trabajo
-▪ Nombre de los alumnos participantes
-▪ Breve descripción del dataset (se puede adjuntar el archivo PDF)
-▪ Conclusiones
-▪ Licencia
-
 # Objetivo del trabajo
 El objetivo principal es analizar los diferentes datos del dataset para poder generar recomendaciones para los hoteles mencionados.
 ## Objetivos secundarios
