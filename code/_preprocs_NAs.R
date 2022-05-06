@@ -28,7 +28,7 @@ datos_NA(hotel_datos)
 # TÉCNICAS UTILIZADAS PARA ELIMINAR O COMPLETAR LOS DATOS FALTANTES.
 
 
-# COLUMNAS: lead_time, arrival_date_year, arrival_date_day_of_month :
+# COLUMNAS: lead_time, arrival_date_year, arrival_date_day_of_month y days_in_waiting_list :
 #Ingresar datos aleatorios
 rand.valor <- function(x){
   faltantes <- is.na(x)
@@ -80,7 +80,7 @@ hotel_datos[is.na(hotel_datos$babies),'babies'] <- 0
 hotel_datos[empty_babies_rows,c('reserved_room_type','babies')]
 
 
-# ADULTS: CORREGIR
+# ADULTS:
 #verificamos datos atipicos de los adultos
 boxplot(x = hotel_datos$adults)
 table(hotel_datos$adults)
