@@ -22,6 +22,7 @@ boxplot(n_parkings ~ arrival_date_month*arrival_date_year, data = nparks.dates,
         xlab = "Año y mes", ylab="Espacios de estacionamiento")
 
 table(nparks.dates[,c("arrival_date_month","n_parkings")])
-# observamos que por semana comúnmente se solicitan entre 6 a 8 aparcamientos
+# observamos que por semana comúnmente se solicitan entre 10-12 aparcamientos
+# pero no en los últimos meses del 2017
 # por lo cual, no se considera importante contar con espacios de estacionamiento,
 # o, en todo caso, considerar solo 1 piso para ello
