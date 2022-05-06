@@ -6,7 +6,7 @@ month<-factor(month_vector,levels=c("January","February","March","April","May","
 levels(month)<-c("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre")
 
 #vizualizar datos
-plot(month,col="darkslategray1",ylab="Cantidad de reservas",xlab="Mes", border = NA)
+plot(month,col="darkslategray1",ylab="Cantidad de reservas",xlab="Mes", border = NA, main ="Temporadas")
 table(month)
 
 
