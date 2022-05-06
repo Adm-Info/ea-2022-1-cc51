@@ -36,7 +36,9 @@ boxplot(required_car_parking_spaces ~ adults, data=hotel_datos)
 # sin embargo, se considerará como dato no válido aquellos que
 # tengan una cantidad de aparcamientos superior a la cantidad de adultos
 # y se colocarán con el máximo de adultos
-hotel_datos$required_car_parking_spaces[hotel_datos$adults < hotel_datos$required_car_parking_spaces] <- hotel_datos$adults[hotel_datos$adults < hotel_datos$required_car_parking_spaces]
+hotel_datos$required_car_parking_spaces[
+  hotel_datos$adults < hotel_datos$required_car_parking_spaces
+  ] <- hotel_datos$adults[hotel_datos$adults < hotel_datos$required_car_parking_spaces]
 boxplot(required_car_parking_spaces ~ adults, data=hotel_datos)
 
 

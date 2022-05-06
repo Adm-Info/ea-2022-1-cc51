@@ -49,6 +49,16 @@ random.df <- function(df, cols){
 hotel_datos<-random.df(hotel_datos, c(3, 4, 7, 26))
 
 
+# ARRIVAL_DATE
+#Concatenaremos las columnas "arrival_date_..." para crear una sola con formato fecha
+#verificamos que los meses tienen formato con nombre del mes, por tanto los transformaremos en número
+hotel_datos$arrival_date <- paste(hotel_datos$arrival_date_year,
+                                  match(substr( hotel_datos$arrival_date_month, 1, 3), month.abb),
+                                  hotel_datos$arrival_date_day_of_month, sep="-")
+hotel_datos$arrival_date <- as.Date(hotel_datos$arrival_date)
+summary(hotel_datos$arrival_date)
+
+
 # CHILDREN:
 # Dado que las familias con niños requieren un poco más de espacio en el cuarto,
 # usaremos la variable tipo de cuarto para comparar
@@ -193,11 +203,3 @@ empty_stays.weeks.fill()
 hotel_datos$stays_in_week_nights[is.na(hotel_datos$stays_in_week_nights)] <- empty_stays.weeks.fill()
 hotel_datos[empty_stays.weeks.nums,c('arrival_date', 'stays_in_weekend_nights', 'stays_in_week_nights')]
 
-
-# ARRIVAL_DATE
-# volvemos a completar los datos de esta columna calculada
-hotel_datos$arrival_date <- paste(hotel_datos$arrival_date_year,
-                                  match(substr( hotel_datos$arrival_date_month, 1, 3), month.abb),
-                                  hotel_datos$arrival_date_day_of_month, sep="-")
-hotel_datos$arrival_date <- as.Date(hotel_datos$arrival_date)
-summary(hotel_datos$arrival_date)
